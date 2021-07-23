@@ -12,7 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.946.0",
     "compression": "^1.7.4",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-graphql": "^0.11.0",
     "express-winston": "^4.0.5",
@@ -21,7 +23,11 @@
     "graphql-compose": "^7.22.1",
     "graphql-compose-mongoose": "^9.0.0",
     "helmet": "^4.6.0",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
     "mongoose": "^5.10.9",
+    "multer": "^1.4.2",
+    "music-metadata": "^7.8.8",
     "winston": "^3.3.3",
     "winston-mongodb": "^5.0.5"
   },

@@ -1,5 +1,4 @@
-const { MediaTC } = require("../model/media");
-const { MediaSchema } = require("../model/media");
+const { MediaTC, MediaSchema } = require("../model/media");
 
 MediaTC.addResolver({
   name: "create",
