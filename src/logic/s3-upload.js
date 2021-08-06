@@ -1,14 +1,15 @@
+require("dotenv").config();
 // Module Imports
 const AWS = require("aws-sdk");
 const fs = require("fs");
-const { AWS_CREDENTIALS } = require("../../credentials");
+
 // Constant Declarations
-const KEY_ID = process.env.AWS_ACCESS_KEY || AWS_CREDENTIALS.AWS_ACCESS_KEY;
-const SECRET_KEY =
-  process.env.AWS_SECRET_ACCESS_KEY || AWS_CREDENTIALS.AWS_SECRET_ACCESS_KEY;
-const BUCKET_NAME = process.env.BUCKET_NAME || AWS_CREDENTIALS.BUCKET_NAME;
+const KEY_ID = process.env.AWS_ACCESS_KEY_ID;
+const SECRET_KEY = process.env.AWS_SECRET_ACCESS_KEY;
+const BUCKET_NAME = process.env.BUCKET_NAME;
 
 module.exports.uploadFile = async (file, name) => {
+  // console.log(process.env);
   // Perform Operation
   try {
     console.log(file, name);

@@ -1,5 +1,0 @@
-module.exports.AWS_CREDENTIALS = {
-  AWS_ACCESS_KEY: "AKIAYKOZCJWT2WYKYF5A",
-  AWS_SECRET_ACCESS_KEY: "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",
-  BUCKET_NAME: "streaming-platform-test",
-};
