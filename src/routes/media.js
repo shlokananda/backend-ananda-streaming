@@ -17,6 +17,9 @@ router.get("/detail", media_controller.media_detail);
 // POST request for creating media.
 router.post("/create", media_controller.media_create_post);
 
+// GET request for creating media.
+router.get("/cloud-upload", media_controller.media_cloud_upload);
+
 // POST request for upload media.
 router.post(
   "/upload",

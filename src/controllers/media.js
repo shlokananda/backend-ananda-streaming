@@ -1,36 +1,14 @@
 const util = require("util");
 const https = require("https");
-// const mp3Url =
-//   "https://streaming-platform-test.s3.us-east-2.amazonaws.com/01OmKali.mp3";
 const fs = require("fs");
-const AWS = require("aws-sdk"); // AWS
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
+
 const mediaModel = require("../model/media");
 const { readMetaData } = require("../logic/read-metadata-from-file");
 const { addTrack } = require("../db-operations/tracks");
+const { uploadFile } = require("../logic/s3-upload");
 
 const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
-
-const uploadFile = (key) => {
-  const fileName = `${__dirname}/01OmKali.mp3`;
-  fs.readFile(fileName, (err, data) => {
-    if (err) throw err;
-    const params = {
-      Bucket: "streaming-platform-test", // pass your bucket name
-      Key: key, // file will be saved as testBucket/contacts.csv
-      Body: JSON.stringify(data, null, 2),
-    };
-    s3.upload(params, function (s3Err, data) {
-      if (s3Err) throw s3Err;
-      console.log(`File uploaded successfully at ${data.Location}`);
-      return `File uploaded successfully at ${data.Location}`;
-    });
-  });
-};
 
 exports.index = function (req, res) {
   res.send("Media API Ready");
@@ -95,6 +73,22 @@ exports.media_upload_post = function (req, res, next) {
     next(err);
   } finally {
     // res.send(req.file);
+  }
+};
+
+// Upload to S3
+exports.media_cloud_upload = function (req, res) {
+  try {
+    console.log("media_cloud_upload");
+    const file = `${__dirname}/samples/01OmKali.mp3`;
+    const name = "New Kali.mp3";
+    uploadFile(file, name).then((uploadedFile) => {
+      console.log(uploadedFile);
+      res.send(uploadedFile);
+    });
+  } catch (err) {
+    console.log(err);
+    res.send(err);
   }
 };
 
