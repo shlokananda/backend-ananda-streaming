@@ -6,8 +6,5 @@ module.exports.addTrack = async (musicObject) => {
     await media.save();
     console.log(media);
     return media;
-    // res.send(media);
-  } catch (error) {
-    // res.status(500).send(error);
-  }
+  } catch (error) {}
 };

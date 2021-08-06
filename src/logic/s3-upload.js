@@ -23,27 +23,30 @@ module.exports.uploadFile = async (file, name) => {
     */
 
     // Read File Contents
-    const fileContent = fs.readFileSync(file);
+    // const fileContent = fs.readFileSync(file);
 
     // Set Parameter/ Configuration for file
     const params = {
       Bucket: BUCKET_NAME,
       Key: name || "Tests.mp3", // File Name that we want to store
-      Body: fileContent,
+      Body: file,
       ContentType: "audio/mpeg",
       ACL: "public-read", //Can be accessed just by url
     };
 
     // Upload file to S3 Specified Bucket
-    s3.upload(params, (err, data) => {
-      if (err) {
-        console.log(err);
-        return err;
-      } else {
-        console.log("File Uploaded Successfully! ", data.Location);
-        return data;
-      }
-    });
+    const stored = await s3
+      .upload(params, (err, data) => {
+        if (err) {
+          console.log(err);
+          return err;
+        } else {
+          console.log("File Uploaded Successfully! ", data.Location);
+          return data;
+        }
+      })
+      .promise();
+    return stored;
     /*
     File Upload Logic Ends Here
     */

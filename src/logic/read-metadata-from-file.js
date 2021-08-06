@@ -1,8 +1,8 @@
 const mm = require("music-metadata");
 
-module.exports.readMetaData = async (newpath) => {
+module.exports.readMetaData = async (buffer, mimetype, fileInfo) => {
   try {
-    const metadata = await mm.parseFile(newpath);
+    const metadata = await mm.parseBuffer(buffer, mimetype);
     const commonData = metadata.common;
     const musicObject = {
       title: commonData.title,
@@ -15,6 +15,7 @@ module.exports.readMetaData = async (newpath) => {
       // picture: commonData.picture,
       track: commonData.track, // Object
       format: metadata.format,
+      file: fileInfo, // Object (S3 Path)
     };
     console.log(musicObject);
     return musicObject;

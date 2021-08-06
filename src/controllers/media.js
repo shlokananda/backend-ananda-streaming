@@ -42,33 +42,32 @@ exports.media_create_post = function (req, res) {
 
 // Handle media upload on POST.
 exports.media_upload_post = function (req, res, next) {
-  //OLD:  res.send(uploadFile(`${__dirname}/01OmKali.mp3`));
   try {
-    // console.log(req);
     const file = req.file;
     let musicObject; // Store Extracted IDV32 Details
     console.log(file);
     // Step #1: Read & Store File Buffer (Local)
-    const newpath = `${__dirname}/samples/${file.originalname}`;
-    if (fs.existsSync(newpath)) {
-      // path exists
-      console.log("File Exist: ", newpath);
-    } else {
-      writeFile(newpath, file.buffer).then(() => {
-        // Step #2: Read Buffer to Read IDV32 tags
-        readMetaData(newpath).then((meta) => {
-          // console.log(meta);
-          // Step #3: Insert into Database
-          addTrack(meta).then((addedTrackInfo) => {
-            try {
-              res.send(addedTrackInfo);
-            } catch (error) {
-              res.status(500).send("Error Storing File Info");
-            }
-          });
+    // const newpath = `${__dirname}/samples/${file.originalname}`;
+
+    uploadFile(file.buffer, file.originalname).then((storedFile) => {
+      console.log("storedFile: ", storedFile);
+      const fileInfo = {
+        location: storedFile.Location,
+        fileName: storedFile.Key,
+      };
+      // Step #2: Read Buffer to Read IDV32 tags
+      readMetaData(file.buffer, file.mimetype, fileInfo).then((meta) => {
+        // console.log(meta);
+        // Step #3: Insert into Database
+        addTrack(meta).then((addedTrackInfo) => {
+          try {
+            res.send(addedTrackInfo);
+          } catch (error) {
+            res.status(500).send("Error Storing File Info");
+          }
         });
       });
-    }
+    });
   } catch (err) {
     next(err);
   } finally {
